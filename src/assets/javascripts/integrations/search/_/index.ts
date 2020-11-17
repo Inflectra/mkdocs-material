@@ -237,8 +237,13 @@ export class Search {
             clause.presence !== lunr.Query.presence.PROHIBITED
           ))
 
+        const queryPart = new RegExp(query.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "ig")
+        const queryExact = new RegExp("([^\\w]|^)" + query.replace(/[.*+\-?^${}()|[\]\\]/g + "([^\\w]|$)", '\\$&'), "ig")
+        const querySub = query.replace(/[^\w]+/ig,' ')
+        const queryLoc = query.replace(".", '/#').toLowerCase();
+
         /* Perform search and post-process results */
-        const groups = this.index.search(`${query}*`)
+        const groups = this.index.search(`${querySub}*`)
 
           /* Apply post-query boosts based on title and search query terms */
           .reduce<SearchResult>((results, { ref, score, matchData }) => {
@@ -254,11 +259,49 @@ export class Search {
 
               /* Highlight title and text and apply post-query boosts */
               const boost = +!parent + +Object.values(terms).every(t => t)
+
+              let matchBoost = 0
+              // Check exact match in the text
+              if(queryPart.test(text))
+              {
+                terms[query.toLowerCase()]=true;
+                if(queryExact.test(text))
+                {
+                  matchBoost+= 2000000;
+                } else {
+                  matchBoost+= 1000000;
+                }
+              }
+
+              // Check exact match in the title
+              if(queryPart.test(title))
+              {
+                terms[query.toLowerCase()]=true;
+                if(queryExact.test(title))
+                {
+                  matchBoost+= 2000000;
+                } else {
+                  matchBoost+= 1000000;
+                }
+              }
+
+              // Check matching part of the url (i.e. Tester.Assert <> ../Tester/#assert)
+              if( location.toLowerCase().indexOf(queryLoc)>=0)
+              {
+                terms[query.toLowerCase()]=true;
+                if(location.toLowerCase().endsWith(queryLoc))
+                {
+                  matchBoost+= 4000000;
+                } else {
+                  matchBoost+= 3000000;
+                }
+              }
+
               results.push({
                 location,
                 title: highlight(title),
                 text: highlight(text),
-                score: score * (1 + boost),
+                score: score * (1 + boost) + matchBoost,
                 terms
               })
             }
