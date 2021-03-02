@@ -240,8 +240,9 @@ export class Search {
         const queryPart = new RegExp(query.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "ig")
         const queryExact = new RegExp("([^\\w]|^)" + query.replace(/[.*+\-?^${}()|[\]\\]/g + "([^\\w]|$)", '\\$&'), "ig")
         const querySub = query.replace(/[^\w]+/ig,' ')
-        const queryLoc = query.replace(".", '/#').toLowerCase();
-
+        let queryLoc = "/"+query.replace(".", '/#').toLowerCase();
+		if(queryLoc.indexOf("/#")<0) queryLoc = queryLoc + "/";
+//console.log("Search for", `${querySub}*`);
         /* Perform search and post-process results */
         const groups = this.index.search(`${querySub}*`)
 
@@ -252,11 +253,10 @@ export class Search {
               const { location, title, text, parent } = document
 
               /* Compute and analyze search query terms */
-              const terms = getSearchQueryTerms(
+              let terms = getSearchQueryTerms(
                 clauses,
                 Object.keys(matchData.metadata)
               )
-
               /* Highlight title and text and apply post-query boosts */
               const boost = +!parent + +Object.values(terms).every(t => t)
 
@@ -264,7 +264,7 @@ export class Search {
               // Check exact match in the text
               if(queryPart.test(text))
               {
-                terms[query.toLowerCase()]=true;
+                terms = {}; terms[query.toLowerCase()] = true;
                 if(queryExact.test(text))
                 {
                   matchBoost+= 2000000;
@@ -276,19 +276,19 @@ export class Search {
               // Check exact match in the title
               if(queryPart.test(title))
               {
-                terms[query.toLowerCase()]=true;
+                terms = {}; terms[query.toLowerCase()] = true;
                 if(queryExact.test(title))
                 {
-                  matchBoost+= 2000000;
+                  matchBoost+= 2100000;
                 } else {
-                  matchBoost+= 1000000;
+                  matchBoost+= 1100000;
                 }
               }
 
               // Check matching part of the url (i.e. Tester.Assert <> ../Tester/#assert)
               if( location.toLowerCase().indexOf(queryLoc)>=0)
               {
-                terms[query.toLowerCase()]=true;
+                terms = {}; terms[query.toLowerCase()] = true;
                 if(location.toLowerCase().endsWith(queryLoc))
                 {
                   matchBoost+= 4000000;
@@ -296,12 +296,26 @@ export class Search {
                   matchBoost+= 3000000;
                 }
               }
+			  
+			  // Also take parent doc's title into account
+			  if(document.parent && document.parent.location)
+			  {
+				const parentDoc = this.documents.get(document.parent.location)
+				if(parentDoc && parentDoc.title && queryPart.test(parentDoc.title))
+				{
+					matchBoost += 100000;
+				}
+			  }
+
+			  
+			  let finalScore = score * (1 + boost) + matchBoost;
+//console.log("found title", title, "finalScore", finalScore);
 
               results.push({
                 location,
                 title: highlight(title),
                 text: highlight(text),
-                score: score * (1 + boost) + matchBoost,
+                score: finalScore,
                 terms
               })
             }

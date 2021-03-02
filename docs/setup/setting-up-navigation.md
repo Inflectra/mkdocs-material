@@ -21,8 +21,8 @@ and its flag-ship feature: [instant loading][3].
 :octicons-unlock-24: Feature flag
 
 When _instant loading_ is enabled, clicks on all internal links will be
-intercepted and dispatched via [XHR][5] without fully reloading the page. It
-can be enabled via `mkdocs.yml` with:
+intercepted and dispatched via [XHR][5] without fully reloading the page. Add
+the following lines to `mkdocs.yml`:
 
 ``` yaml
 theme:
@@ -46,8 +46,17 @@ _Material for MkDocs is the only MkDocs theme offering this feature._
 [:octicons-file-code-24: Source][6] · :octicons-unlock-24: Feature flag
 
 When _tabs_ are enabled, top-level sections are rendered in a menu layer below
-the header for viewports above `1220px`, but remain as-is on mobile. They can be
-enabled via `mkdocs.yml` with:
+the header for viewports above `1220px`, but remain as-is on mobile.[^1] Add
+the following lines to `mkdocs.yml`:
+
+  [^1]:
+    Prior to version 6.2, navigation tabs had a slightly different behavior.
+    All top-level pages (i.e. all top-level entries that directly refer to an
+    `*.md` file) defined inside the `nav` entry of `mkdocs.yml` were grouped
+    under the first tab which received the title of the first page. This made
+    it impossible to include a top-level page (or external link) as a tab item,
+    as was reported in #1884 and #2072. From version 6.2 on, navigation tabs
+    include all top-level pages and sections.
 
 ``` yaml
 theme:
@@ -63,63 +72,48 @@ theme:
 
     [![Without tabs][8]][8]
 
-Note that all __top-level pages__ (i.e. all top-level entries that directly
-refer to an `*.md` file) defined inside the [`nav`][9] entry of `mkdocs.yml`
-will be grouped under the first tab which will receive the title of the first
-page.
-
-This means that there will effectively be no collapsible subsections for the
-first tab, because each subsection is rendered as another tab. If you want more
-fine-grained control, _i.e. collapsible subsections for the first tab_, you can
-use __top-level sections__, so that the top-level is entirely made up of
-sections. This is illustrated in the following example:
-
-=== "Top-level pages"
-
-    ``` yaml
-    nav:
-      - Tab 1 + Page 1.1
-      - Page 1.2
-      - Tab 2:
-        - Page 2.1
-        - Page 2.2
-        - Page 2.3
-      - Page 1.3
-    ```
-
-=== "Top-level sections"
-
-    ``` yaml
-    nav:
-      - Tab 1:
-        - Page 1.1
-        - Page 1.2
-        - Page 1.3
-      - Tab 2:
-        - Page 2.1
-        - Page 2.2
-        - Page 2.3
-    ```
-
-Also note that tabs are only shown for larger screens, so make sure that
-navigation is plausible on mobile devices. As another example, see the
-[`mkdocs.yml`][10] used to render these pages.
-
   [6]: https://github.com/squidfunk/mkdocs-material/blob/master/src/partials/tabs.html
   [7]: ../assets/screenshots/navigation-tabs.png
   [8]: ../assets/screenshots/navigation.png
-  [9]: https://www.mkdocs.org/user-guide/configuration/#nav
-  [10]: https://github.com/squidfunk/mkdocs-material/blob/master/mkdocs.yml
+
+#### Sticky navigation tabs
+
+[:octicons-file-code-24: Source][9] ·
+:octicons-unlock-24: Feature flag ·
+:octicons-beaker-24: Experimental ·
+[:octicons-heart-fill-24:{: .tx-heart } Insiders only][9]{: .tx-insiders }
+
+When _sticky tabs_ are enabled, navigation tabs will lock below the header and
+always remain visible when scrolling down. Just add the following two feature
+flags to `mkdocs.yml`:
+
+``` yaml
+theme:
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+```
+
+=== "With sticky tabs"
+
+    [![With sticky tabs][10]][10]
+
+=== "Without sticky tabs"
+
+    [![Without sticky tabs][11]][11]
+
+  [9]: ../insiders.md
+  [10]: ../assets/screenshots/navigation-tabs-sticky.png
+  [11]: ../assets/screenshots/navigation-tabs-collapsed.png
 
 ### Navigation sections
 
-[:octicons-file-code-24: Source][11] ·
-:octicons-unlock-24: Feature flag ·
-[:octicons-heart-fill-24:{: .tx-heart } Insiders only][11]{: .tx-insiders }
+[:octicons-file-code-24: Source][12] ·
+:octicons-unlock-24: Feature flag
 
 When _sections_ are enabled, top-level sections are rendered as groups in the
-sidebar for viewports above `1220px`, but remain as-is on mobile. They can also
-be enabled via `mkdocs.yml`:
+sidebar for viewports above `1220px`, but remain as-is on mobile. Add the
+following lines to `mkdocs.yml`:
 
 ``` yaml
 theme:
@@ -129,28 +123,27 @@ theme:
 
 === "With sections"
 
-    [![With sections][12]][12]
+    [![With sections][13]][13]
 
 === "Without sections"
 
     [![Without sections][8]][8]
 
-  [11]: ../insiders.md
-  [12]: ../assets/screenshots/navigation-sections.png
+  [12]: https://github.com/squidfunk/mkdocs-material/blob/master/src/partials/nav-item.html
+  [13]: ../assets/screenshots/navigation-sections.png
 
 Both feature flags, _tabs_ and _sections_, can be combined with each other. If
-both feature flags are enabled, sections are rendered for 2nd level navigation
+both feature flags are enabled, sections are rendered for level 2 navigation
 items.
 
 ### Navigation expansion
 
-[:octicons-file-code-24: Source][11] ·
-:octicons-unlock-24: Feature flag ·
-[:octicons-heart-fill-24:{: .tx-heart } Insiders only][11]{: .tx-insiders }
+[:octicons-file-code-24: Source][12] ·
+:octicons-unlock-24: Feature flag
 
 When _expansion_ is enabled, the left sidebar will expand all collapsible
 subsections by default, so the user doesn't have to open subsections manually.
-It can be enabled via `mkdocs.yml` with:
+Add the following lines to `mkdocs.yml`:
 
 ``` yaml
 theme:
@@ -160,19 +153,72 @@ theme:
 
 === "With expansion"
 
-    [![With expansion][13]][13]
+    [![With expansion][14]][14]
 
 === "Without expansion"
 
     [![Without expansion][8]][8]
 
-  [13]: ../assets/screenshots/navigation-expand.png
+  [14]: ../assets/screenshots/navigation-expand.png
+
+### Section index pages
+
+[:octicons-file-code-24: Source][9] ·
+:octicons-unlock-24: Feature flag ·
+:octicons-beaker-24: Experimental ·
+[:octicons-heart-fill-24:{: .tx-heart } Insiders only][9]{: .tx-insiders }
+
+When _section index pages_ are enabled, documents can be directly attached to
+sections, which is particularly useful for providing overview pages. Add the
+following lines to `mkdocs.yml`:
+
+``` yaml
+theme:
+  features:
+    - navigation.indexes
+```
+
+=== "With section index pages"
+
+    [![With expansion][15]][15]
+
+=== "Without section index pages"
+
+    [![Without expansion][16]][16]
+
+In order to link a page to a section, create a new document with the name
+`index.md` in the respective folder, and add it to the beginning of your
+navigation section:
+
+``` yaml
+nav:
+  - Section:
+    - section/index.md
+    - Page 1: section/page-1.md
+    ...
+    - Page n: section/page-n.md
+```
+
+_This feature flag can be combined with all other feature flags, e.g. [tabs][1]
+and [sections][2], except for table of contents [navigation integration][17].
+Note that it doesn't rely on third-party plugins[^2]._
+
+  [^2]:
+    If you don't want to use the native integration, the
+    [mkdocs-section-index][18] plugin might be an alternative. However, note
+    that this plugin may not be compatible with all navigation-related features
+    offered by Material for MkDocs.
+
+  [15]: ../assets/screenshots/navigation-index-on.png
+  [16]: ../assets/screenshots/navigation-index-off.png
+  [17]: #navitation-intergation
+  [18]: https://github.com/oprypin/mkdocs-section-index
 
 ### Table of contents
 
-[:octicons-file-code-24: Source][14] · [:octicons-workflow-24: Extension][15]
+[:octicons-file-code-24: Source][19] · [:octicons-workflow-24: Extension][20]
 
-The [Table of contents][16] extension, which is part of the standard Markdown
+The [Table of contents][21] extension, which is part of the standard Markdown
 library, provides some options that are supported by Material for MkDocs to
 customize its appearance:
 
@@ -203,8 +249,8 @@ customize its appearance:
 
 :   :octicons-milestone-24: Default: `headerid.slugify` – This option allows for 
     customization of the slug function. For some languages, the default may not
-    produce good and readable identifiers. Consider using another slug function
-    like for example those from [Python Markdown Extensions][17]:
+    produce good and readable identifiers – consider using another slug function
+    like for example those from [Python Markdown Extensions][22]:
 
     === "Unicode"
 
@@ -245,31 +291,30 @@ customize its appearance:
               toc_depth: 0
         ```
 
-    Note that MkDocs will not generate [anchor links][18] for levels outside
+    Note that MkDocs will not generate [anchor links][23] for levels outside
     the range defined with `toc_depth`. However, Material for MkDocs also allows
-    to [hide the table of contents][19] on a specific page while keeping
+    to [hide the table of contents][24] on a specific page while keeping
     permalinks.
 
 _Material for MkDocs doesn't provide official support for the other options of
 this extension, so they may be supported but can also yield weird results. Use
 them at your own risk._
 
-  [14]: https://github.com/squidfunk/mkdocs-material/blob/master/src/partials/toc.html
-  [15]: https://python-markdown.github.io/extensions/toc/
-  [16]: https://python-markdown.github.io/extensions/toc/#usage
-  [17]: https://facelessuser.github.io/pymdown-extensions/extras/slugs/
-  [18]: #permalink
-  [19]: #hide-the-sidebars
+  [19]: https://github.com/squidfunk/mkdocs-material/blob/master/src/partials/toc.html
+  [20]: https://python-markdown.github.io/extensions/toc/
+  [21]: https://python-markdown.github.io/extensions/toc/#usage
+  [22]: https://facelessuser.github.io/pymdown-extensions/extras/slugs/
+  [23]: #permalink
+  [24]: #hide-the-sidebars
 
 #### Navigation integration
 
-[:octicons-file-code-24: Source][11] ·
-:octicons-unlock-24: Feature flag ·
-[:octicons-heart-fill-24:{: .tx-heart } Insiders only][11]{: .tx-insiders }
+[:octicons-file-code-24: Source][25] ·
+:octicons-unlock-24: Feature flag
 
 When _integration_ is enabled, the table of contents is rendered as part of
-the navigation for viewports above `1220px`, but remain as-is on mobile. This
-can be enabled via `mkdocs.yml`:
+the navigation for viewports above `1220px`, but remains as-is on mobile. Add
+the following lines to `mkdocs.yml`:
 
 ``` yaml
 theme:
@@ -279,13 +324,14 @@ theme:
 
 === "Integrate table of contents"
 
-    [![Integrate table of contents][20]][20]
+    [![Integrate table of contents][26]][26]
 
 === "Separate table of contents"
 
     [![Separate table of contents][8]][8]
 
-  [20]: ../assets/screenshots/toc-integrate.png
+  [25]: https://github.com/squidfunk/mkdocs-material/blob/master/src/assets/stylesheets/main/layout/_nav.scss
+  [26]: ../assets/screenshots/toc-integrate.png
 
 The content section will now always stretch to the right side, resulting in
 more space for your content. This feature flag can be combined with all other
@@ -293,12 +339,12 @@ feature flags, e.g. [tabs][1] and [sections][2].
 
 ### Hide the sidebars
 
-[:octicons-file-code-24: Source][11] ·
-[:octicons-heart-fill-24:{: .tx-heart } Insiders only][11]{: .tx-insiders }
+[:octicons-file-code-24: Source][27] ·
+:octicons-note-24: Metadata
 
 Sometimes it's desirable to hide the navigation and/or table of contents
 sidebar, especially when there's a single navigation item. This can be done for
-any page using the [Metadata][21] extension:
+any page using the [Metadata][28] extension:
 
 ``` yaml
 ---
@@ -312,26 +358,27 @@ hide:
 
 === "Hide navigation"
 
-    [![Hide navigation][22]][22]
+    [![Hide navigation][29]][29]
 
 === "Hide table of contents"
 
-    [![Hide table of contents][23]][23]
+    [![Hide table of contents][30]][30]
 
 === "Hide both"
 
-    [![Hide navigation and table of contents][24]][24]
+    [![Hide navigation and table of contents][31]][31]
 
-  [21]: ../../reference/meta-tags/#metadata
-  [22]: ../assets/screenshots/hide-navigation.png
-  [23]: ../assets/screenshots/hide-toc.png
-  [24]: ../assets/screenshots/hide-navigation-toc.png
+  [27]: https://github.com/squidfunk/mkdocs-material/blob/master/src/base.html
+  [28]: ../../reference/meta-tags/#metadata
+  [29]: ../assets/screenshots/hide-navigation.png
+  [30]: ../assets/screenshots/hide-toc.png
+  [31]: ../assets/screenshots/hide-navigation-toc.png
 
 ## Customization
 
 ### Keyboard shortcuts
 
-[:octicons-file-code-24: Source][25] ·
+[:octicons-file-code-24: Source][32] ·
 :octicons-mortar-board-24: Difficulty: _easy_
 
 Material for MkDocs includes several keyboard shortcuts that make it possible
@@ -357,7 +404,7 @@ to navigate your project documentation via keyboard. There're two modes:
     * ++n++ , ++period++ : go to next page
 
 Let's say you want to bind some action to the ++x++ key. By using [additional
-JavaScript][26], you can subscribe to the `keyboard$` observable and attach
+JavaScript][33], you can subscribe to the `keyboard$` observable and attach
 your custom event listener:
 
 ``` js
@@ -373,12 +420,12 @@ The call to `#!js key.claim()` will essentially execute `#!js preventDefault()`
 on the underlying event, so the keypress will not propagate further and touch
 other event listeners.
 
-  [25]: https://github.com/squidfunk/mkdocs-material/blob/master/src/assets/javascripts/integrations/keyboard/index.ts
-  [26]: ../customization.md#additional-javascript
+  [32]: https://github.com/squidfunk/mkdocs-material/blob/master/src/assets/javascripts/integrations/keyboard/index.ts
+  [33]: ../customization.md#additional-javascript
 
 ### Content area width
 
-[:octicons-file-code-24: Source][27] ·
+[:octicons-file-code-24: Source][34] ·
 :octicons-mortar-board-24: Difficulty: _easy_
 
 The width of the content area is set so the length of each line doesn't exceed
@@ -387,7 +434,7 @@ is a reasonable default, as longer lines tend to be harder to read, it may be
 desirable to increase the overall width of the content area, or even make it
 stretch to the entire available space.
 
-This can easily be achieved with an [additional stylesheet][28] and a few lines
+This can easily be achieved with an [additional stylesheet][35] and a few lines
 of CSS:
 
 === "Increase width"
@@ -406,5 +453,5 @@ of CSS:
     }
     ```
 
-  [27]: https://github.com/squidfunk/mkdocs-material/blob/aeaa00a625abf952f355164de02c539b061e6127/src/assets/stylesheets/main/layout/_base.scss#L99-L104
-  [28]: ../customization.md#additional-css
+  [34]: https://github.com/squidfunk/mkdocs-material/blob/aeaa00a625abf952f355164de02c539b061e6127/src/assets/stylesheets/main/layout/_base.scss
+  [35]: ../customization.md#additional-css

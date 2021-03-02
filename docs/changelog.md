@@ -4,68 +4,68 @@ template: overrides/main.html
 
 # Changelog
 
-## Material for MkDocs Insiders
+## Material for MkDocs
 
-### 1.10.0 <small>_ November 15, 2020</small>
+### 6.2.8 <small>_ February 4, 2021</small>
 
-- Added support for integrating table of contents into navigation
+- Updated Japanese and Polish translations
+- Fixed #2261: Print dialog auto-closing when using instant loading
 
-### 1.9.0 <small>_ November 7, 2020</small>
+### 6.2.7 <small>_ January 31, 2021</small>
 
-- Added support for hiding navigation and table of contents on any page
-- Removed autohiding table of contents when empty
+- Fixed #2251: Updated Docker image to latest Alpine Linux
 
-### 1.8.0 <small>_ November 1, 2020</small>
+### 6.2.6 <small>_ January 26, 2021</small>
+
+- Added Bulgarian translations
+- Fixed #2233: Search not shown when using header autohiding
+
+### 6.2.5 <small>_ January 17, 2021</small>
+
+- Fixed syntax error in Swedish translations
+- Optimized navigation partials to improve build speed for huge docs
+
+### 6.2.4 <small>_ January 9, 2021</small>
+
+- Fixed #2156: Missing syntax highlighting for binary numbers
+- Fixed #2186: Disqus showing on 404 page
+
+### 6.2.3 <small>_ December 27, 2020</small>
+
+- Added back hidden overflow on root container
+- Fixed #2142: MathJax formulas sometimes have vertical scrollbars
+
+### 6.2.2 <small>_ December 22, 2020</small>
+
+- Removed Markdown version range limit (6.2.0 regression)
+
+### 6.2.1 <small>_ December 22, 2020</small>
+
+- Fixed all import and asset paths in templates (6.2.0 regression)
+- Downgraded webpack-asset-manifest-plugin - broke all asset paths
+
+### 6.2.0 <small>_ December 22, 2020</small>
 
 - Added support for navigation sections
-- Fixed appearance of inactive search suggestions
-
-### 1.7.0 <small>_ October 25, 2020</small>
-
-- Added support for deploying multiple versions
-- Fixed alignment of sidebar when content area is too small
-
-### 1.6.0 <small>_ October 11, 2020</small>
-
-- Added support for search suggestions to save keystrokes
-- Added support for removing __Made with Material for MkDocs__ from footer
-- Fixed #1915: search should go to first result by pressing ++enter++
-
-### 1.5.1 <small>_ September 21, 2020</small>
-
-- Fixed content area stretching to whole width for long code blocks
-
-### 1.5.0 <small>_ September 19, 2020</small>
-
-- Added support for autohiding table of contents when empty
-
-### 1.4.1 <small>_ September 6, 2020</small>
-
-- Improved typeahead and search result relevance and scoring
-
-### 1.4.0 <small>_ August 30, 2020</small>
-
+- Added support for navigation expansion
+- Added support for integrating table of contents into navigation
 - Added support for autohiding header on scroll
+- Added support for hiding navigation and table of contents per page
+- Added support for arbitrary items in navigation tabs
+- Refactored navigation tabs to simplify grouping behavior
+- Fixed anchor offset for permalinks in Safari (partial revert)
+- Fixed #2098: Active tab sometimes not highlighted correctly
+- Improved appearance for horizontal rulers
+- Improved Spanish and Swedish translations
 
-### 1.3.0 <small>_ August 26, 2020</small>
+### 6.1.7 <small>_ December 6, 2020</small>
 
-- Added support for user-selectable color palettes
+- Fixed #2081: Fixed stats for private GitHub repositories
+- Fixed alignment for admonition icon alignment for right-to-left languages
 
-### 1.2.0 <small>_ August 11, 2020</small>
+### 6.1.6 <small>_ November 22, 2020</small>
 
-- Added feature to expand navigation by default
-
-### 1.1.0 <small>_ August 3, 2020</small>
-
-- Added highlighting of search results
-
-### 1.0.0 <small>_ July 14, 2020</small>
-
-- Added grouping of search results
-- Added missing query terms to search result
-- Improved search result relevance and scoring
-
-## Material for MkDocs
+- Fixed #2048: Math formulas show scrollbars (Windows)
 
 ### 6.1.5 <small>_ November 15, 2020</small>
 
@@ -84,7 +84,7 @@ template: overrides/main.html
 
 ### 6.1.2 <small>_ October 31, 2020</small>
 
-- Fixed sizing of icons in Admonition, Tasklist, etc. (6.1.1 regression)
+- Fixed sizing of icons in admonitions, task lists, etc. (6.1.1 regression)
 
 ### 6.1.1 <small>_ October 31, 2020</small>
 
@@ -186,7 +186,7 @@ template: overrides/main.html
 - Improved highlight colors and spacing for `ins`, `del` and `mark`
 - Changed some keyboard symbols for better equivalents
 - Removed focus `outline` for details and code blocks on touch devices
-- Fixed margins for Admonitions (5.5.1 regression)
+- Fixed margins for admonitions (5.5.1 regression)
 - Fixed too small content tab labels (5.5.1 regression)
 - Fixed icon repeating for custom admonition icons
 
@@ -336,7 +336,7 @@ template: overrides/main.html
 - Support for displaying stars and forks for GitLab repositories
 - Support for scroll snapping of sidebars and search results
 - Reduced HTML and CSS footprint due to deprecation of Internet Explorer support
-- Slight facelifting of some UI elements (Admonitions, tables, ...)
+- Slight facelifting of some UI elements (admonitions, tables, ...)
 
 ### 4.6.3 <small>_ February 14, 2020</small>
 
@@ -635,8 +635,8 @@ template: overrides/main.html
 
 ### 2.3.0 <small>_ January 9, 2018</small>
 
-- Added `example` (synonym: `snippet`) style for Admonition
-- Added synonym `abstract` for `summary` style for Admonition
+- Added `example` (synonym: `snippet`) style for admonitions
+- Added synonym `abstract` for `summary` style for admonitions
 
 ### 2.2.6 <small>_ December 27, 2017</small>
 
@@ -660,11 +660,11 @@ template: overrides/main.html
 
 - Added Dutch translations
 - Adjusted targeted link and footnote offsets
-- Simplified Admonition styles and fixed padding bug
+- Simplified admonition styles and fixed padding bug
 
 ### 2.2.1 <small>_ December 2, 2017</small>
 
-- Fixed #616: Minor styling error with title-only admonition blocks
+- Fixed #616: Minor styling error with title-only admonitions
 - Removed border for table of contents and improved spacing
 
 ### 2.2.0 <small>_ November 22, 2017</small>
@@ -774,10 +774,10 @@ template: overrides/main.html
 
 ### 1.9.0 <small>_ August 29, 2017</small>
 
-- Added `info` (synonym: `todo`) style for Admonition
-- Added `question` (synonym: `help`, `faq`) style for Admonition
+- Added `info` (synonym: `todo`) style for admonitions
+- Added `question` (synonym: `help`, `faq`) style for admonitions
 - Added support for Details from PyMdown Extensions package
-- Improved Admonition styles to match Details
+- Improved admonition styles to match details
 - Improved styles for social links in footer
 - Replaced ligatures with Unicode code points to avoid broken layout
 - Upgraded PyMdown Extensions package dependency to >= 3.4
@@ -924,7 +924,7 @@ template: overrides/main.html
 
 ### 1.2.0 <small>_ March 3, 2017</small>
 
-- Added `quote` (synonym: `cite`) style for Admonition
+- Added `quote` (synonym: `cite`) style for admonitions
 - Added help message to build pipeline
 - Fixed wrong navigation link colors when applying palette
 - Fixed #197: Link missing in tabs navigation on deeply nested items
