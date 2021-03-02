@@ -237,12 +237,12 @@ export class Search {
             clause.presence !== lunr.Query.presence.PROHIBITED
           ))
 
-        const queryPart = new RegExp(query.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), "ig")
-        const queryExact = new RegExp("([^\\w]|^)" + query.replace(/[.*+\-?^${}()|[\]\\]/g + "([^\\w]|$)", '\\$&'), "ig")
-        const querySub = query.replace(/[^\w]+/ig,' ')
-        let queryLoc = "/"+query.replace(".", '/#').toLowerCase();
-		if(queryLoc.indexOf("/#")<0) queryLoc = queryLoc + "/";
-//console.log("Search for", `${querySub}*`);
+        const queryPart = new RegExp(query.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&"), "ig")
+        const queryExact = new RegExp("([^\\w]|^)" + query.replace(/[.*+\-?^${}()|[\]\\]/g + "([^\\w]|$)", "\\$&"), "ig")
+        const querySub = query.replace(/[^\w]+/ig, " ")
+        let queryLoc = "/" + query.replace(".", "/#").toLowerCase()
+        if (queryLoc.indexOf("/#") < 0) queryLoc = queryLoc + "/"
+        // console.log("Search for", `${querySub}*`);
         /* Perform search and post-process results */
         const groups = this.index.search(`${querySub}*`)
 
@@ -262,55 +262,49 @@ export class Search {
 
               let matchBoost = 0
               // Check exact match in the text
-              if(queryPart.test(text))
-              {
-                terms = {}; terms[query.toLowerCase()] = true;
-                if(queryExact.test(text))
-                {
-                  matchBoost+= 2000000;
+              if (queryPart.test(text)) {
+                terms = {}
+                terms[query.toLowerCase()] = true
+                if (queryExact.test(text)) {
+                  matchBoost += 2000000
                 } else {
-                  matchBoost+= 1000000;
+                  matchBoost += 1000000
                 }
               }
 
               // Check exact match in the title
-              if(queryPart.test(title))
-              {
-                terms = {}; terms[query.toLowerCase()] = true;
-                if(queryExact.test(title))
-                {
-                  matchBoost+= 2100000;
+              if (queryPart.test(title)) {
+                terms = {}
+                terms[query.toLowerCase()] = true
+                if (queryExact.test(title)) {
+                  matchBoost += 2100000
                 } else {
-                  matchBoost+= 1100000;
+                  matchBoost += 1100000
                 }
               }
 
               // Check matching part of the url (i.e. Tester.Assert <> ../Tester/#assert)
-              if( location.toLowerCase().indexOf(queryLoc)>=0)
-              {
-                terms = {}; terms[query.toLowerCase()] = true;
-                if(location.toLowerCase().endsWith(queryLoc))
-                {
-                  matchBoost+= 4000000;
+              if (location.toLowerCase().indexOf(queryLoc) >= 0) {
+                terms = {}
+                terms[query.toLowerCase()] = true
+                if (location.toLowerCase().endsWith(queryLoc)) {
+                  matchBoost += 4000000
                 } else {
-                  matchBoost+= 3000000;
+                  matchBoost += 3000000
                 }
               }
-			  
-			  // Also take parent doc's title into account
-			  if(parent && parent.location)
-			  {
-				const parentDoc = this.documents.get(parent.location)
-				if(parentDoc && parentDoc.title && queryPart.test(parentDoc.title))
-				{
-					matchBoost += 100000;
-				}
-			  }
 
-			  
-			  let finalScore = score * (1 + boost) + matchBoost;
-//console.log("found title", title, "finalScore", finalScore);
+              // Also take parent doc's title into account
+              if (parent && parent.location) {
+                const parentDoc = this.documents.get(parent.location)
+                if (parentDoc && parentDoc.title && queryPart.test(parentDoc.title)) {
+                    matchBoost += 100000
+                }
+              }
 
+              const finalScore = score * (1 + boost) + matchBoost
+              // console.log("found title", title, "finalScore", finalScore);
+              /** Use boosted final score */
               results.push({
                 location,
                 title: highlight(title),
