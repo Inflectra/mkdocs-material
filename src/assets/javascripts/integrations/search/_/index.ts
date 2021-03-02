@@ -298,9 +298,9 @@ export class Search {
               }
 			  
 			  // Also take parent doc's title into account
-			  if(document.parent && document.parent.location)
+			  if(parent && parent.location)
 			  {
-				const parentDoc = this.documents.get(document.parent.location)
+				const parentDoc = this.documents.get(parent.location)
 				if(parentDoc && parentDoc.title && queryPart.test(parentDoc.title))
 				{
 					matchBoost += 100000;
